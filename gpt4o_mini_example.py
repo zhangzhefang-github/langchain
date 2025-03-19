@@ -21,7 +21,7 @@ def main():
     
     # 创建提示模板
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "你是一个智能助手，能够提供有用、安全和诚实的回答。"),
+        ("system", "You are a helpful assistant that provides useful, safe, and honest answers."),
         ("human", "{input}")
     ])
     
@@ -29,36 +29,36 @@ def main():
     chain = prompt | llm | StrOutputParser()
     
     # 运行链
-    response = chain.invoke({"input": "介绍一下中国的四大发明"})
-    print("GPT-4o mini 回答:")
+    response = chain.invoke({"input": "Tell me about the Four Great Inventions of ancient China"})
+    print("GPT-4o mini response:")
     print(response)
     
     # 演示聊天历史
-    print("\n连续对话示例:")
+    print("\nContinuous dialogue example:")
     from langchain_core.messages import HumanMessage, AIMessage
     
     chat_history = []
     
     # 第一轮对话
     messages = [
-        ("system", "你是一个专业的历史老师，对中国历史有深入了解。"),
-        ("human", "中国古代有哪些著名的发明?")
+        ("system", "You are a history teacher with deep knowledge of Chinese history."),
+        ("human", "What are some famous inventions from ancient China?")
     ]
     prompt_with_history = ChatPromptTemplate.from_messages(messages)
     chain = prompt_with_history | llm | StrOutputParser()
     response = chain.invoke({})
-    print("\n问题: 中国古代有哪些著名的发明?")
-    print(f"回答: {response}")
+    print("\nQuestion: What are some famous inventions from ancient China?")
+    print(f"Answer: {response}")
     
     # 更新聊天历史
     chat_history.extend([
-        HumanMessage(content="中国古代有哪些著名的发明?"),
+        HumanMessage(content="What are some famous inventions from ancient China?"),
         AIMessage(content=response)
     ])
     
     # 第二轮对话 - 带上下文
     messages = [
-        ("system", "你是一个专业的历史老师，对中国历史有深入了解。"),
+        ("system", "You are a history teacher with deep knowledge of Chinese history."),
     ]
     # 添加聊天历史
     for message in chat_history:
@@ -68,13 +68,13 @@ def main():
             messages.append(("assistant", message.content))
     
     # 添加新问题
-    messages.append(("human", "这些发明对世界产生了什么影响?"))
+    messages.append(("human", "What impact did these inventions have on the world?"))
     
     prompt_with_history = ChatPromptTemplate.from_messages(messages)
     chain = prompt_with_history | llm | StrOutputParser()
     response = chain.invoke({})
-    print("\n问题: 这些发明对世界产生了什么影响?")
-    print(f"回答: {response}")
+    print("\nQuestion: What impact did these inventions have on the world?")
+    print(f"Answer: {response}")
 
 if __name__ == "__main__":
     main() 
